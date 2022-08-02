@@ -15,5 +15,5 @@ jobs:
       - uses: alex-page/github-project-automation-plus@v0.3.0
         with:
           project: testProject
-          field: editProjects2
+          column: ToDo
           repo-token: ${{ secrets.PAT }}
