@@ -68,8 +68,6 @@ jobs:
           TICKET=$(git rev-parse --abbrev-ref HEAD | grep -Eo '^(\w+/)?(\w+[-_])?[0-9]+' | grep -Eo '(\w+[-])?[0-9]+' | tr "[:lower:]" "[:upper:]")
           echo "Rredmine_link=https://redmine.precs.jp/issues/$TICKET" >> $GITHUB_ENV
 
-      - name: TEST
-        run: echo ${{env.Rredmine_link}}
 
       - name: Set fields
         env:
@@ -108,4 +106,4 @@ jobs:
                   id
                 }
               }
-            }' -f project=$PROJECT_ID -f item=$ITEM_ID -f redmine_field=$REDMINE_FIELD_ID -f redmine_value=${{ env.Rredmine_link }} -f date_field=$DATE_FIELD_ID -f date_value=$DATE --silent
+            }' -f project=$PROJECT_ID -f item=$ITEM_ID -f redmine_field=$REDMINE_FIELD_ID -f redmine_value=$Rredmine_link -f date_field=$DATE_FIELD_ID -f date_value=$DATE --silent
