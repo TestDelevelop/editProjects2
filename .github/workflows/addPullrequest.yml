@@ -12,6 +12,15 @@ jobs:
 
       - name: Checkout repo
         uses: actions/checkout@v3
+        
+      - name: Get TICKET and Create Redmine link
+        run: |
+          test=$(git rev-parse --abbrev-ref HEAD)
+          echo $test
+          TICKET=$(git rev-parse --abbrev-ref HEAD | grep -Eo '^(\w+/)?(\w+[-_])?[0-9]+' | grep -Eo '(\w+[-])?[0-9]+' | tr "[:lower:]" "[:upper:]")
+          echo $TICKET
+          echo "REDMINE=https://redmine.precs.jp/issues/${TICKET}">> $GITHUB_ENV
+
 
       - name: Get Project data
         env:
@@ -66,14 +75,6 @@ jobs:
 
       - name: Get date
         run: echo "DATE=$(date +"%Y-%m-%d")" >> $GITHUB_ENV
-
-      - name: Get TICKET and Create Redmine link
-        run: |
-          test=$(git rev-parse --abbrev-ref HEAD)
-          echo $test
-          TICKET=$(git rev-parse --abbrev-ref HEAD | grep -Eo '^(\w+/)?(\w+[-_])?[0-9]+' | grep -Eo '(\w+[-])?[0-9]+' | tr "[:lower:]" "[:upper:]")
-          echo $TICKET
-          echo "REDMINE=https://redmine.precs.jp/issues/${TICKET}">> $GITHUB_ENV
 
       - name: Set fields
         env:
