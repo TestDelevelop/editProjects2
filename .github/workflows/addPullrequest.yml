@@ -6,9 +6,19 @@ on:
       - ready_for_review
 
 jobs:
-  track_pr:
+  build:
     runs-on: ubuntu-latest
     steps:
+
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        
+      - name: Get Ticket and Create Redmine link
+        run: |
+          TICKET=`echo ${{github.head_ref}}|sed "s/\//#/g"|sed -e "s/^.*#\(.*\)_.*$/\1/"`
+          echo "REDMINE=https://redmine.precs.jp/issues/${TICKET}">> $GITHUB_ENV
+
+
       - name: Get Project data
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
@@ -62,11 +72,6 @@ jobs:
 
       - name: Get date
         run: echo "DATE=$(date +"%Y-%m-%d")" >> $GITHUB_ENV
-
-      - name: Get Redmine link
-        run: |
-          TICKET=$(git rev-parse --abbrev-ref HEAD | grep -Eo '^(\w+/)?(\w+[-_])?[0-9]+' | grep -Eo '(\w+[-])?[0-9]+' | tr "[:lower:]" "[:upper:]")
-          echo "REDMINE=https://redmine.precs.jp/issues/$TICKET">> $GITHUB_ENV
 
       - name: Set fields
         env:
