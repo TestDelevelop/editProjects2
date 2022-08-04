@@ -11,10 +11,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - id: 'reviews'
+      - name: Get Review Count
+        id: 'reviews'
         uses: 'jrylan/github-action-reviews-counter@main'
         with:
           repo-token: '${{ secrets.GITHUB_TOKEN }}'
+
+      - name: Use Count
         run: |
           test=steps.reviews.outputs.approved
           echo $test
