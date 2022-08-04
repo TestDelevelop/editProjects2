@@ -15,7 +15,7 @@ jobs:
         
       - name: Get TICKET and Create Redmine link
         run: |
-          branch_name=`${{github.head_ref}}|sed -n "///,/_/p"`
+          branch_name=`${{github.head_ref}}|sed "s/\//\\\\\\\\\//g"`
           echo $branch_name
           TICKET=`$text | grep -Eo '^(\w+/)?(\w+[-_])?[0-9]+' | grep -Eo '(\w+[-])?[0-9]+' | tr "[:lower:]" "[:upper:]"`
           echo $TICKET
