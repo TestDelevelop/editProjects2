@@ -68,12 +68,10 @@ jobs:
           TICKET=$(git rev-parse --abbrev-ref HEAD | grep -Eo '^(\w+/)?(\w+[-_])?[0-9]+' | grep -Eo '(\w+[-])?[0-9]+' | tr "[:lower:]" "[:upper:]")
           echo 'REDMINE="https://redmine.precs.jp/issues/$TICKET"'>> $GITHUB_ENV
 
-
       - name: Set fields
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
         run: |
-          echo "
           gh api graphql -f query='
             mutation (
               $project: ID!
@@ -107,4 +105,4 @@ jobs:
                   id
                 }
               }
-            }' -f project=$PROJECT_ID -f item=$ITEM_ID -f redmine_field=$REDMINE_FIELD_ID -f redmine_value=$REDMINE -f date_field=$DATE_FIELD_ID -f date_value=$DATE --silent"
+            }' -f project=$PROJECT_ID -f item=$ITEM_ID -f redmine_field=$REDMINE_FIELD_ID -f redmine_value=$REDMINE -f date_field=$DATE_FIELD_ID -f date_value=$DATE --silent
