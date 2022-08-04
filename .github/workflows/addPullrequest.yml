@@ -87,7 +87,7 @@ jobs:
                 itemId: $item
                 fieldId: $redmine_field
                 value: {
-                  singleSelectOptionId: $redmine_value
+                  text: $redmine_value
                   }
               }) {
                 projectV2Item {
