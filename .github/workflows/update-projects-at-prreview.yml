@@ -3,14 +3,20 @@ name: Update Projects at Pull Request Review
 on:
   pull_request_review:
     types: 
-      - edited
-      - submitted
+      - 'edited'
+      - 'dismissed'
+      - 'submitted'
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: レビュー情報取得
+      - id: 'reviews'
+        uses: 'jrylan/github-action-reviews-counter@main'
+        with:
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'
+      - # Conditionally run the next step
+        if: 'steps.reviews.outputs.approved >= 1 && steps.reviews.outputs.changes_requested == 0'
         run: |
-          test=${{toJSON(github)}}
+          test=steps.reviews.outputs.approved
           echo $test
