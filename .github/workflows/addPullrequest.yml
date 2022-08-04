@@ -15,8 +15,8 @@ jobs:
         
       - name: Get TICKET and Create Redmine link
         run: |
-          test=${{github.head_ref}}
-          echo $test >> $GITHUB_ENV
+          test=`${{github.head_ref}}|sed 's/_.*//'`
+          echo $test
           TICKET=`$text | grep -Eo '^(\w+/)?(\w+[-_])?[0-9]+' | grep -Eo '(\w+[-])?[0-9]+' | tr "[:lower:]" "[:upper:]"`
           echo $TICKET
           echo "REDMINE=https://redmine.precs.jp/issues/${TICKET}">> $GITHUB_ENV
