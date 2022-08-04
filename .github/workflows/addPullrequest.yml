@@ -65,10 +65,9 @@ jobs:
 
       - name: Get TICKET and Create Redmine link
         run: |
-          test=${{toJSON(github)}}
+          test=${{ toJSON(github) }}
           echo $test
-          TICKET=$(git rev-parse --abbrev-ref HEAD | grep -Eo '^(\w+/)?(\w+[-_])?[0-9]+' | grep -Eo '(\w+[-])?[0-9]+' | tr "[:lower:]" "[:upper:]")
-          echo $TICKET
+        # TICKET=$(git rev-parse --abbrev-ref HEAD | grep -Eo '^(\w+/)?(\w+[-_])?[0-9]+' | grep -Eo '(\w+[-])?[0-9]+' | tr "[:lower:]" "[:upper:]")
         # echo "REDMINE=https://redmine.precs.jp/issues/${TICKET}">> $GITHUB_ENV
 
       - name: Set fields
