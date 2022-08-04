@@ -23,6 +23,6 @@ jobs:
           echo "requested:${{steps.reviews.outputs.assigned.changes_requested}}"
           echo "commented:${{steps.reviews.outputs.assigned.commented}}"
           echo "dismissed:${{steps.reviews.outputs.assigned.dismissed}}"
-          test=${{toJSON(github.event.review)}}
+          test=${{toJSON(github.event.review._links.pull_request)}}
           echo $test
         # echo $(curl -s ${{github.event.review._link.pull_request}})
