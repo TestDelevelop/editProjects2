@@ -15,7 +15,7 @@ jobs:
         
       - name: Get TICKET and Create Redmine link
         run: |
-          test="$(git rev-parse --abbrev-ref @)"
+          test=$(git rev-parse --short HEAD)
           test1=`git rev-parse --abbrev-ref @`
           echo $test
           echo $test1
