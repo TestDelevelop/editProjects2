@@ -9,6 +9,10 @@ jobs:
   track_pr:
     runs-on: ubuntu-latest
     steps:
+
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
       - name: Get Project data
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
@@ -65,10 +69,8 @@ jobs:
 
       - name: Get TICKET and Create Redmine link
         run: |
-          test=${{ toJSON(github) }}
-          echo $test
-        # TICKET=$(git rev-parse --abbrev-ref HEAD | grep -Eo '^(\w+/)?(\w+[-_])?[0-9]+' | grep -Eo '(\w+[-])?[0-9]+' | tr "[:lower:]" "[:upper:]")
-        # echo "REDMINE=https://redmine.precs.jp/issues/${TICKET}">> $GITHUB_ENV
+          TICKET=$(git rev-parse --abbrev-ref HEAD | grep -Eo '^(\w+/)?(\w+[-_])?[0-9]+' | grep -Eo '(\w+[-])?[0-9]+' | tr "[:lower:]" "[:upper:]")
+          echo "REDMINE=https://redmine.precs.jp/issues/${TICKET}">> $GITHUB_ENV
 
       - name: Set fields
         env:
