@@ -1,0 +1,28 @@
+name: Update Projects at Pull Request Review
+
+on:
+  pull_request_review:
+    types: 
+      - 'edited'
+      - 'dismissed'
+      - 'submitted'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Get Review Count
+        id: 'reviews'
+        uses: 'jrylan/github-action-reviews-counter@main'
+        with:
+          repo-token: '${{ secrets.GITHUB_TOKEN }}'
+
+      - name: Use Count
+        run: |
+          echo "approved:${{steps.reviews.outputs.assigned.approved}}"
+          echo "requested:${{steps.reviews.outputs.assigned.changes_requested}}"
+          echo "commented:${{steps.reviews.outputs.assigned.commented}}"
+          echo "dismissed:${{steps.reviews.outputs.assigned.dismissed}}"
+          test=${{toJSON(github.event.review._links.pull_request)}}
+          echo $test
+        # echo $(curl -s ${{github.event.review._link.pull_request}})
