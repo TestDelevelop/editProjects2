@@ -1,0 +1,16 @@
+name: Update Projects at Pull Request Review
+
+on:
+  pull_request_review:
+    types: 
+      - edited
+      - submitted
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: レビュー情報取得
+        run: |
+          test=${{toJSON(github.event.review)}}
+          echo $test
