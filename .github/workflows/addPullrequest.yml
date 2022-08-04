@@ -73,6 +73,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
         run: |
+          echo "
           gh api graphql -f query='
             mutation (
               $project: ID!
@@ -82,7 +83,7 @@ jobs:
               $date_field: ID!
               $date_value: Date!
             ) {
-              set_redmine: updateProjectV2ItemFieldValue(input: {
+              set_redmine_posted: updateProjectV2ItemFieldValue(input: {
                 projectId: $project
                 itemId: $item
                 fieldId: $redmine_field
@@ -106,4 +107,4 @@ jobs:
                   id
                 }
               }
-            }' -f project=$PROJECT_ID -f item=$ITEM_ID -f redmine_field=$REDMINE_FIELD_ID -f redmine_value=$REDMINE -f date_field=$DATE_FIELD_ID -f date_value=$DATE --silent
+            }' -f project=$PROJECT_ID -f item=$ITEM_ID -f redmine_field=$REDMINE_FIELD_ID -f redmine_value=$REDMINE -f date_field=$DATE_FIELD_ID -f date_value=$DATE --silent"
