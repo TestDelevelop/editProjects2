@@ -13,12 +13,9 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
         
-      - name: Get TICKET and Create Redmine link
+      - name: Get Ticket and Create Redmine link
         run: |
-          branch_name=`echo ${{github.head_ref}}|sed "s/\//#/g"|sed -e "s/^.*#\(.*\)_.*$/\1/"`
-          echo $branch_name
-          TICKET=`git rev-parse --abbrev-ref HEAD | grep -Eo '^(\w+/)?(\w+[-_])?[0-9]+' | grep -Eo '(\w+[-])?[0-9]+' | tr "[:lower:]" "[:upper:]"`
-          echo $TICKET
+          TICKET=`echo ${{github.head_ref}}|sed "s/\//#/g"|sed -e "s/^.*#\(.*\)_.*$/\1/"`
           echo "REDMINE=https://redmine.precs.jp/issues/${TICKET}">> $GITHUB_ENV
 
 
