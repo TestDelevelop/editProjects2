@@ -63,7 +63,7 @@ jobs:
       - name: Get date
         run: echo "DATE=$(date +"%Y-%m-%d")" >> $GITHUB_ENV
 
-      - name: Get Redmine link
+      - name: Get TICKET and Create Redmine link
         run: |
           TICKET=$(git rev-parse --abbrev-ref HEAD | grep -Eo '^(\w+/)?(\w+[-_])?[0-9]+' | grep -Eo '(\w+[-])?[0-9]+' | tr "[:lower:]" "[:upper:]")
           echo "REDMINE=https://redmine.precs.jp/issues/$TICKET">> $GITHUB_ENV
