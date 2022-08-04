@@ -69,6 +69,9 @@ jobs:
           TICKET=$(git rev-parse --abbrev-ref HEAD | grep -Eo '^(\w+/)?(\w+[-_])?[0-9]+' | grep -Eo '(\w+[-])?[0-9]+' | tr "[:lower:]" "[:upper:]")
           echo "Rredmine_link=https://redmine.precs.jp/issues/$TICKET" >> $GITHUB_ENV
 
+      - name: TEST
+        run: echo ${{env.Rredmine_link}}
+
       - name: Set fields
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
