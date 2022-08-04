@@ -20,4 +20,6 @@ jobs:
       - name: Use Count
         run: |
           test=${{steps.reviews.outputs.approved}}
-          echo $test
+          echo "approved:${{steps.reviews.outputs.approved}}"
+          echo "requested:${{steps.reviews.outputs.changes_requested}}"
+          echo "dismissed:${{steps.reviews.outputs.dismissed}}"
