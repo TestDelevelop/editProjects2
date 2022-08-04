@@ -42,7 +42,8 @@ jobs:
 
           echo 'PROJECT_ID='$(jq '.data.organization.projectV2.id' project_data.json) >> $GITHUB_ENV
           echo 'DATE_FIELD_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Add Date") | .id' project_data.json) >> $GITHUB_ENV
-          echo 'TODO_OPTION_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Status") | .options[] | select(.name=="Open") |.id' project_data.json) >> $GITHUB_ENV
+          echo 'STATUS_FIELD_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Status") | .id' project_data.json) >> $GITHUB_ENV
+          echo 'REDMINE_FIELD_ID='$(jq '.data.organization.projectV2.fields.nodes[] | select(.name== "Redmine") | .id' project_data.json) 
 
       - name: Add PR to Projects
         env:
@@ -63,6 +64,11 @@ jobs:
       - name: Get date
         run: echo "DATE=$(date +"%Y-%m-%d")" >> $GITHUB_ENV
 
+      - name: Get Redmine link
+        run: |
+          TICKET=$(git rev-parse --abbrev-ref HEAD | grep -Eo '^(\w+/)?(\w+[-_])?[0-9]+' | grep -Eo '(\w+[-])?[0-9]+' | tr "[:lower:]" "[:upper:]")
+          echo "Rredmine_link=https://redmine.precs.jp/issues/$TICKET" >> $GITHUB_ENV
+
       - name: Set fields
         env:
           GITHUB_TOKEN: ${{ secrets.PAT }}
@@ -71,9 +77,23 @@ jobs:
             mutation (
               $project: ID!
               $item: ID!
+              $redmine_field: ID!
+              $redmine_value: String!
               $date_field: ID!
               $date_value: Date!
             ) {
+              set_status: updateProjectV2ItemFieldValue(input: {
+                projectId: $project
+                itemId: $item
+                fieldId: $redmine_field
+                value: {
+                  singleSelectOptionId: $redmine_value
+                  }
+              }) {
+                projectV2Item {
+                  id
+                  }
+              }
               set_date_posted: updateProjectV2ItemFieldValue(input: {
                 projectId: $project
                 itemId: $item
@@ -86,4 +106,4 @@ jobs:
                   id
                 }
               }
-            }' -f project=$PROJECT_ID -f item=$ITEM_ID -f date_field=$DATE_FIELD_ID -f date_value=$DATE --silent
+            }' -f project=$PROJECT_ID -f item=$ITEM_ID -f redmine_field=$STATUS_FIELD_ID -f redmine_value=${{ env.Rredmine_link }} -f date_field=$DATE_FIELD_ID -f date_value=$DATE --silent
