@@ -3,6 +3,7 @@ name: Add Pull Request to Project
 on:
   pull_request:
     types:
+      - opened
       - ready_for_review
       - converted_to_draft
 
